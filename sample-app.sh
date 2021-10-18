@@ -1,15 +1,15 @@
 #!/bin/bash
 set -euo pipefail
 
-mkdir tempdi
-mkdir tempdi/templates
-mkdir tempdi/static
+mkdir tempdir
+mkdir tempdir/templates
+mkdir tempdir/static
 
-cp sample_app.py tempdi/.
-cp -r templates/* tempdi/templates/.
-cp -r static/* tempdi/static/.
+cp sample_app.py tempdir/.
+cp -r templates/* tempdir/templates/.
+cp -r static/* tempdir/static/.
 
-cat > tempdi/Dockerfile << _EOF_
+cat > tempdir/Dockerfile << _EOF_
 FROM python
 RUN pip install flask
 COPY  ./static /home/myapp/static/
@@ -19,7 +19,7 @@ EXPOSE 5050
 CMD python /home/myapp/sample_app.py
 _EOF_
 
-cd tempdi || exit
+cd tempdir || exit
 docker build -t sampleapp .
 docker run -t -d -p 5050:5050 --name samplerunning sampleapp
 docker ps -a 
